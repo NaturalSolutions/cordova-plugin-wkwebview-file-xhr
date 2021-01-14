@@ -886,9 +886,10 @@
         if (context.interceptRemoteRequests)           // backdoor to override per instance
           interceptRemoteRequests = context.interceptRemoteRequests;
 
+        var fileSchema = (config._fileSchema || 'file');
         if ("GET" === context.method && typeof context.url === "string" &&
-          ((context.url.indexOf("://") === -1 && window.location.protocol === "file:") ||
-           (context.url.toLowerCase().startsWith("file://"))))
+          ((context.url.indexOf("://") === -1 && window.location.protocol === fileSchema + ":") ||
+           (context.url.toLowerCase().startsWith(fileSchema + "://"))))
         {
           resolve(new FileHandler(context, config));
         }
