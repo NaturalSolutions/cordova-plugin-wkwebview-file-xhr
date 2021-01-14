@@ -61,6 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, retain) NSURLSession *urlSession;
 @property (nonatomic, retain) NSString *nativeXHRLogging;
+@property (nonatomic, retain) NSString *fileSchema;
 
 @end
 
@@ -99,6 +100,13 @@ NS_ASSUME_NONNULL_BEGIN
         _nativeXHRLogging = value;
     } else {
         _nativeXHRLogging = @"none";
+    }
+    
+    value = [self.commandDelegate.settings cdvwkStringForKey:@"scheme"];
+    if (value != nil) {
+        _fileSchema = value;
+    } else {
+        _fileSchema = @"file";
     }
     
     WKWebView *wkWebView = (WKWebView *) self.webView;
@@ -252,7 +260,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSDictionary *dict = @{
                            @"InterceptRemoteRequests" : _interceptRemoteRequests,
-                           @"NativeXHRLogging" : _nativeXHRLogging
+                           @"NativeXHRLogging" : _nativeXHRLogging,
+                           @"_fileSchema" : _fileSchema
                           };
     
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict] callbackId:command.callbackId];
